@@ -8,7 +8,7 @@
 const std::string dataFile = "url.txt";
 const std::string results = "results.txt";
 
-void readAndWriteURLFile(std::string dataFile)
+void readAndWriteURLFile()
 {
     std::ifstream in;
     std::ofstream out;
@@ -80,7 +80,7 @@ int main(void)
 {
     //Call both global init and cleanup exactly once, before and after using libcurl, respectively
     curl_global_init(CURL_GLOBAL_ALL);
-    readAndWriteURLFile(dataFile);
+    readAndWriteURLFile();
     curl_global_cleanup();
 	return 0;
 }
