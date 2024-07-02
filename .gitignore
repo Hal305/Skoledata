@@ -431,3 +431,4 @@ FodyWeavers.xsd
 *.sln.iml
 config.ini
 url.txt
+results.txt

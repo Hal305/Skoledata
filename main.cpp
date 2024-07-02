@@ -5,19 +5,16 @@
 #include <Windows.h>
 
 const std::string dataFile = "url.txt";
+const std::string results = "results.txt";
 
-static size_t headerCallback(void* contents, size_t size, size_t nmemb, void* userp)
-{
-    ((std::string*)userp)->append((char*)contents, size * nmemb);
-    return size * nmemb;
-}
-
-void readFile(std::string dataFile)
+void readAndWriteURLFile(std::string dataFile)
 {
     std::ifstream in;
+    std::ofstream out;
     std::string url;
 
     in.open(dataFile.c_str());
+    out.open(results.c_str());
 
     if (in.is_open())
     {
@@ -32,8 +29,6 @@ void readFile(std::string dataFile)
                 Sleep(1000);
             CURL* curl = curl_easy_init();
             in >> url;
-            std::string readBuffer ="";
-                
                 
             curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
             //std::cout << url << "\n";
@@ -53,20 +48,25 @@ void readFile(std::string dataFile)
             else
             {
                 std::cout << i << " \n" << url << "\n";
+                i--;
                 fprintf(stderr, "curl_easy_perform() failed: %s\n",
                     curl_easy_strerror(res));
             }
+
+            out << url << ": " << responseCode << "\n";
 
             curl_easy_cleanup(curl);
         }
     }
     in.close();
+    out.close();
 }
 
 int main(void)
 {
+
     curl_global_init(CURL_GLOBAL_ALL);
-	readFile(dataFile);
+    readAndWriteURLFile(dataFile);
     curl_global_cleanup();
 	return 0;
 }
